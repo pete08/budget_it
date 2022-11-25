@@ -17,4 +17,6 @@ Troubleshoot_Notes/
 *.xlsb
 *.xls
 *.pdf
-scratch.py
+*scratch.py
+
+.DS_Store
