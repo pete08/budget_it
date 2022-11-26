@@ -1,10 +1,15 @@
-# [  ] 1 - Fix error 'yticks' 
-# AttributeError: Text.set() got an unexpected keyword argument 'interval'
-# File "/Users/peter/Desktop/Programming/budgeting_01/scratch.py", line 23, in <module>
-    # plt.yticks(range(0,round(max(df_group_mo_yr['Amount']))+2000),interval = 100)
+# NEXT
+# [ ] 1 - Cateogrical spend: Machine learning 
+# [ ] 1 - Cateogrical spend: Make sample for Marchine Learning to learn:
+                        # 1. list of trasaction merch/words
+                        # 2. categories' list
+# [ ] 1 - Cateogrical spend: Implement machine learning to categorize spending 
+# [ ] 2 - Output a pdf with:
+                        # 1. Monthly spend
+                        # 2. past 3mo's categorical spend pie graph 
+                        # 3. Years' categorical spend pie graph 
 
 
-# Import the required Module
 import pdfplumber
 import pandas as pd
 import re
