@@ -1,4 +1,5 @@
-# NEXT
+# LIST of Interest:
+# OPTIONAL [ ] - Make DF For each month
 # [ ] 1 - Cateogrical spend: Machine learning 
 # [ ] 1 - Cateogrical spend: Make sample for Marchine Learning to learn:
                         # 1. list of trasaction merch/words
@@ -8,6 +9,9 @@
                         # 1. Monthly spend
                         # 2. past 3mo's categorical spend pie graph 
                         # 3. Years' categorical spend pie graph 
+# Cluster prior yrs' bar and curent yr bar a distinct color
+
+
 
 
 import pdfplumber
@@ -23,8 +27,9 @@ pd.set_option('display.max_rows', None)
 # Get date
 today = datetime.datetime.today().strftime("%Y-%m-%d %H:%M")
 mm = datetime.datetime.today().strftime("%m")
+current_yr_mm = datetime.datetime.today().strftime("%Y-%m")
 # Get the list of all files and directories
-path = "/Users/peter/Desktop/Programming/budgeting_01"
+path = "/Users/peter/Desktop/Programming/budget_it"
 outputfilename = "spendcsv_{}.csv".format(today)
 
 
@@ -121,7 +126,7 @@ print("txnsdf.shape == (rows, columns): ", txnsdf.shape)
 # Remove pmts from DF
 df = txnsdf[txnsdf["Amount"] > 0]
 # scrap current mm's transactions: spend NOT complete
-df = df[df['Month'] != mm]
+df = df[df['YearMonth'] != current_yr_mm]
 
 #Output df to csv
 df.to_csv((path + "/" + outputfilename))
@@ -129,7 +134,7 @@ df.to_csv((path + "/" + outputfilename))
 # group by Month, Year, Date
 df_group_mo_yr = df.groupby(["YearMonth"])["Amount"].sum()
 
-
+df_group_mo_yr = pd.DataFrame({'YearMonth':df_group_mo_yr.index, 'Amount':df_group_mo_yr.values})
 
 
 print(df_group_mo_yr)
@@ -137,18 +142,5 @@ df_group_mo_yr.plot.bar("YearMonth",'Amount', rot=0)
 plt.xlabel('Month')
 plt.ylabel('Amount Spent')
 plt.title('CC Spend past Year')
-plt.yticks(range(500,max(df_group_mo_yr['Amount'])+2000))
+plt.yticks(range(500,int(max(df_group_mo_yr['Amount'])+500), 150))
 plt.show()
-# LIST of Interest:
-# [x] - DNLD ALL STMTS 
-# [x] - Re-Run to create 12 month statement trxn Graph
-# [ ] - Group by month 
-# [ ] - Create Graph of spend per Month --- matplotlab
-# [ ] - Add to github
-# OPTIONAL [ ] - Add Year: get yr as arg in:
-#                   whichpages(reader_pages, list_of_txns=[]
-#                   transactionList(list, +yr) 
-#                   add "year" to each row
-#                   add "Year" in df columns b/n Month, Date
-# 
-# OPTIONAL [ ] - Make DF For each month
