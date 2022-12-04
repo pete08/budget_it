@@ -20,6 +20,7 @@ import re
 import os
 import datetime
 import matplotlib.pyplot as plt
+import mysql.connector
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
@@ -47,11 +48,11 @@ def transactionList(list, stmtyear):
     stmtmo = stmtyear[4:]
     list_of_lines = []
     for line in list:
-        if len(line) > 16 and line.find("/") == 2:
+        if len(line) > 16 and line.find("/") == 2 and re.search("\d[.]\d\d$",line):
             # Prep empty list, to then append Transaction deets
             trxn_line_split = []
             # Initial Transaction split in 2: date, descr_amt
-            regexsearch = re.search("[/]\d\d\s{6}",line)
+            regexsearch = re.search("[/]\d\d\s{3}",line)
             date, descr_amt = line[:5], line[regexsearch.span()[1]:]
             # Append "Month" to trxn_line_split
             trxn_line_split.append(date[0:2])
@@ -73,6 +74,8 @@ def transactionList(list, stmtyear):
             descript = descr_amt[0:amt_indx]
             trxn_line_split.append(descript)
             # Find then Append "Amount"
+            print("extracting amount from:\n{}".format(descr_amt))
+            print("as part of:\n{}".format(line))
             amount = float(descr_amt[(amt_indx+1):].replace(',',''))
             trxn_line_split.append(amount)
             # Append new transaction line to Trxn Population
@@ -92,7 +95,7 @@ def whichpages(pdf, stmtyear):
         page_text_pre = page_text_pre.splitlines()
         page_inscope = []
         for line in page_text_pre:
-            trxn_line = re.findall("\d\d[/]\d\d\s{6}", line)
+            trxn_line = re.findall("\d\d[/]\d\d\s{3}", line)
             if len(trxn_line) > 0:
                 page_inscope.append(line)
         print("page_iscope: {0}, page_inscope contains trxn count of    : {1}".format(x, len(page_inscope)))
@@ -128,6 +131,25 @@ df = txnsdf[txnsdf["Amount"] > 0]
 # scrap current mm's transactions: spend NOT complete
 df = df[df['YearMonth'] != current_yr_mm]
 
+# # Populate MySql
+# # Output to MySql table 'cred_spend_practice': Part 1of2
+# try:
+#     cnx = mysql.connector.connect(user='root', password='', host='127.0.0.1', database='sampledb')
+#     cursor = cnx.cursor()
+#     query_add_cred_spend_practice = ("""INSERT INTO cred_spend_practice (Month, Year, YearMonth, Date, Description, Amount)
+#     VALUES (%s, %s, %s, %s, %s, %s)""")
+#     #Output to MySql table 'cred_spend_practice': Part 2of2 - Insert the rows
+#     for index, row in df.iterrows():
+#         cursor.execute(query_add_cred_spend_practice, [row.Month, row.Year, row.YearMonth, row.Date, row.Description, row.Amount])    
+#     cnx.commit()
+# except mysql.connector.Error as err:
+#     print("Eror-code:", err.errno)
+#     print("Eror-message: {}".format(err.msg))
+# finally:
+#     cursor.close()
+#     cnx.close()
+
+
 #Output df to csv
 df.to_csv((path + "/" + outputfilename))
 
@@ -142,5 +164,5 @@ df_group_mo_yr.plot.bar("YearMonth",'Amount', rot=0)
 plt.xlabel('Month')
 plt.ylabel('Amount Spent')
 plt.title('CC Spend past Year')
-plt.yticks(range(500,int(max(df_group_mo_yr['Amount'])+500), 150))
+plt.yticks(range(500,int(max(df_group_mo_yr['Amount'])+500), 500))
 plt.show()
