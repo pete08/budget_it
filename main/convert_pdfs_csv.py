@@ -8,10 +8,10 @@ import re
 import os
 import datetime
 import matplotlib.pyplot as plt
-import mysql.connector
 import fullfilelistpdf
 import pullpagestrxns
 import retrievedatabase
+import plot_spend_graph
 
 # pd.set_option('display.max_columns', None)
 # pd.set_option('display.max_rows', None)
@@ -51,38 +51,9 @@ df = df[df['YearMonth'] != current_yr_mm]
 #Output df to csv
 df.to_csv((outputpath + "/" + outputfilename))
 
-# # Populate MySql
-# # Output to MySql table 'cred_spend_practice': Part 1of2
-# try:
-#     cnx = mysql.connector.connect(user='root', password='', host='127.0.0.1', database='sampledb')
-#     cursor = cnx.cursor()
-#     query_add_cred_spend_practice = ("""INSERT INTO cred_spend_practice (Month, Year, YearMonth, Date, Description, Amount)
-#     VALUES (%s, %s, %s, %s, %s, %s)""")
-#     #Output to MySql table 'cred_spend_practice': Part 2of2 - Insert the rows
-#     for index, row in df.iterrows():
-#         cursor.execute(query_add_cred_spend_practice, [row.Month, row.Year, row.YearMonth, row.Date, row.Description, row.Amount])    
-#     cnx.commit()
-# except mysql.connector.Error as err:
-#     print("Eror-code:", err.errno)
-#     print("Eror-message: {}".format(err.msg))
-# finally:
-#     cursor.close()
-#     cnx.close()
-
+# Input to mysql db.table
 dbtable = retrievedatabase.RetrievDB(user = db_inscope["user"], password = db_inscope["password"], host = db_inscope["host"], database = db_inscope["database"])
 dbtable.popccspendtable(df, ccspendtable=db_inscope["table"])
 
-
-
-# # group by Month, Year, Date
-# df_group_mo_yr = df.groupby(["YearMonth"])["Amount"].sum()
-# # convert columns to df
-# df_group_mo_yr = pd.DataFrame({'YearMonth':df_group_mo_yr.index, 'Amount':df_group_mo_yr.values})
-
-# print(df_group_mo_yr)
-# df_group_mo_yr.plot.bar("YearMonth",'Amount', rot=0)
-# plt.xlabel('Month')
-# plt.ylabel('Amount Spent')
-# plt.title('CC Spend past Year')
-# plt.yticks(range(500,int(max(df_group_mo_yr['Amount'])+500), 500))
-# plt.show()
+# display new df's graph using "plot_spend_graph.py" or call in terminal with newly created pop csv
+# plot_spend_graph.plotspend(df)

@@ -9,9 +9,13 @@ def plotspend(df):
     df_group_mo_yr = pd.DataFrame({'YearMonth':df_group_mo_yr.index, 'Amount':df_group_mo_yr.values})
 
     print(df_group_mo_yr)
-    df_group_mo_yr.plot.bar("YearMonth",'Amount', rot=0)
+    df_group_mo_yr.plot.bar("YearMonth",'Amount', rot=-70)
     plt.xlabel('Month')
     plt.ylabel('Amount Spent')
     plt.title('CC Spend past Year')
     plt.yticks(range(500,int(max(df_group_mo_yr['Amount'])+500), 500))
     plt.show()
+
+
+# df = pd.read_csv("./...csv")
+# plotspend(df)
