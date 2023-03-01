@@ -10,7 +10,7 @@ import datetime
 import matplotlib.pyplot as plt
 import fullfilelistpdf
 import pullpagestrxns
-import retrievedatabase
+# import retrievedatabase
 import plot_spend_graph
 
 # pd.set_option('display.max_columns', None)
@@ -51,9 +51,9 @@ df = df[df['YearMonth'] != current_yr_mm]
 #Output df to csv
 df.to_csv((outputpath + "/" + outputfilename))
 
-# Input to mysql db.table
-dbtable = retrievedatabase.RetrievDB(user = db_inscope["user"], password = db_inscope["password"], host = db_inscope["host"], database = db_inscope["database"])
-dbtable.popccspendtable(df, ccspendtable=db_inscope["table"])
+# # Input to mysql db.table
+# dbtable = retrievedatabase.RetrievDB(user = db_inscope["user"], password = db_inscope["password"], host = db_inscope["host"], database = db_inscope["database"])
+# dbtable.popccspendtable(df, ccspendtable=db_inscope["table"])
 
 # display new df's graph using "plot_spend_graph.py" or call in terminal with newly created pop csv
 plot_spend_graph.plotspend(df)

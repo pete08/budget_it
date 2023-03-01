@@ -13,10 +13,10 @@ def plotspend(df):
     plt.xlabel('Month')
     plt.ylabel('Take my Money!')
     plt.title('Spend Tracker')
-    # plt.yticks(range(500,int(max(df_group_mo_yr['[($)]'])+500), 500))
-    plt.yticks([])
+    # plt.yticks([])
+    plt.yticks(range(1000,int(max(df_group_mo_yr['[($)]'])+1000), 750))
     plt.show()
 
 
-df = pd.read_csv("./spendcsv_2022-12-07 21:25.csv")
-plotspend(df)
+# df = pd.read_csv("./spendcsv_2022-12-07 21:25.csv")
+# plotspend(df)
