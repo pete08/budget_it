@@ -18,6 +18,8 @@ Troubleshoot_Notes/
 *.xls
 *.pdf
 *scratch.py
+*regex_scratch.py
+*readpdf_scratch.py
 
 #folders
 */*.egg-info
