@@ -56,4 +56,4 @@ dbtable = retrievedatabase.RetrievDB(user = db_inscope["user"], password = db_in
 dbtable.popccspendtable(df, ccspendtable=db_inscope["table"])
 
 # display new df's graph using "plot_spend_graph.py" or call in terminal with newly created pop csv
-# plot_spend_graph.plotspend(df)
+plot_spend_graph.plotspend(df)

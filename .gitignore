@@ -4,6 +4,7 @@ logs/
 output/
 tmp/
 .vscode/
+venv/
 
 Troubleshoot_Notes/
 **/__pycache__
