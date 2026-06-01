@@ -21,8 +21,9 @@ today = datetime.datetime.today().strftime("%Y-%m-%d %H:%M")
 mm = datetime.datetime.today().strftime("%m")
 current_yr_mm = datetime.datetime.today().strftime("%Y-%m")
 # Get the list of all stmts and directories
-stmtpath = "/Users/peter/Desktop/Programming/budget_it/stmts"
-outputpath = "/Users/peter/Desktop/Programming/budget_it"
+# stmtpath = "/Users/Peter/Desktop/Programming/budget_it/stmts"
+stmtpath = "stmts" # run from main dir,.... not full path to stmts folder, as this is more portable across machines
+outputpath = ""  # run from main dir,.... not full path to stmts folder, as this is more portable across machines
 outputfilename = "spendcsv_{}.csv".format(today)
 dir_list = os.listdir(stmtpath)
 # Database variables:
@@ -41,7 +42,7 @@ for filepath in stmts:
         list_full_pop = list_full_pop + list_of_transactions
 
 txnsdf = pd.DataFrame(list_full_pop, columns=(["Month", "Year", "YearMonth", "Date", "Description", "Amount"]))
-print("txnsdf.shape == (rows, columns): ", txnsdf.shape)
+# print("txnsdf.shape == (rows, columns): ", txnsdf.shape)
 
 # Remove pmts from DF
 df = txnsdf[txnsdf["Amount"] > 0]

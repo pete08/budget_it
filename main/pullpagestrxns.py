@@ -5,12 +5,14 @@ def transactionList(list, stmtyear):
     stmtyearint = int(stmtyear[:4])
     stmtmo = stmtyear[4:]
     list_of_lines = []
+    print("transactionList() is parsing list of lines: \n{}".format(list))
     for line in list:
+        print("line: {}".format(line))
         if len(line) > 16 and line.find("/") == 2 and re.search("\d[.]\d\d$",line):
             # Prep empty list, to then append Transaction deets
             trxn_line_split = []
             # Initial Transaction split in 2: date, descr_amt
-            regexsearch = re.search("[/]\d\d\s{3}",line)
+            regexsearch = re.search("[/]\d\d\s{1}",line)
             date, descr_amt = line[:5], line[regexsearch.span()[1]:]
             # Append "Month" to trxn_line_split
             trxn_line_split.append(date[0:2])
@@ -19,6 +21,7 @@ def transactionList(list, stmtyear):
                 trxn_line_split.append(stmtyearint-1)
                 # Append "Year-Mo"
                 trxn_line_split.append(str(stmtyearint-1) + "-" + date[0:2])
+
             else:
                 # Append "Year"
                 trxn_line_split.append(stmtyearint)
@@ -33,8 +36,9 @@ def transactionList(list, stmtyear):
             trxn_line_split.append(descript)
             # Find then Append "Amount"
             print("extracting amount from:\n{}".format(descr_amt))
-            print("as part of:\n{}".format(line))
+            # print("as part of:\n{}".format(line))
             amount = float(descr_amt[(amt_indx+1):].replace(',',''))
+            # print("from line: {}, extracted amount: {}".format(line, amount))
             trxn_line_split.append(amount)
             # Append new transaction line to Trxn Population
             list_of_lines.append(trxn_line_split)
@@ -58,10 +62,12 @@ def whichpages(pdf, stmtyear):
             page_text_pre = page_text_pre.splitlines()
             page_inscope = []
             for line in page_text_pre:
-                trxn_line = re.findall("\d\d[/]\d\d\s{3}", line)
+                trxn_line = re.findall(r"^\d\d[/]\d\d\s{1}", line)
+                # print("line: {}, trxn_line: {}".format(line, trxn_line))
                 if len(trxn_line) > 0:
+                    print("if len(trxn_line > 0): {}, trxn_line: {}".format(line, trxn_line))
                     page_inscope.append(line)
-            print("page_iscope: {0}, page_inscope contains trxn count of    : {1}".format(x, len(page_inscope)))
+            # print("page_iscope: {0}, page_inscope contains trxn count of    : {1}".format(x, len(page_inscope)))
             trxnslist = transactionList(page_inscope, stmtyear)
             list_of_txns = list_of_txns + trxnslist
     return list_of_txns
