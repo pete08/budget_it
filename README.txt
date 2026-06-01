@@ -6,6 +6,8 @@ Purpose:
 Steps:
 1. git clone to local drive
 2. open terminal and run*: 
+    $ py -m venv venv
+    $ source venv/Scripts/activate
     $ pip install -r requirements.txt
 3. download your past credit card statements** in pdf format
 4. input them into program's "stmts" folders
